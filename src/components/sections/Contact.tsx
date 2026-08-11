@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import emailjs from "@emailjs/browser";
-import { Mail, MapPin, Phone, Send, CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Phone, Send, CheckCircle } from "lucide-react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import Button from "@/components/ui/Button";
 import { personalInfo } from "@/lib/data";
@@ -40,40 +39,24 @@ const socialLinks = [
 
 export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
-    setSubmitError(null);
-    try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        {
-          from_name: data.name,
-          reply_to: data.email,
-          subject: data.subject,
-          message: data.message,
-        },
-        {
-          publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-        }
-      );
-      setIsSubmitted(true);
-      reset();
-      setTimeout(() => setIsSubmitted(false), 5000);
-    } catch {
-      setSubmitError(
-        "Sorry, the message couldn't be sent. Please try again or email me directly."
-      );
-    }
+  const onSubmit = (data: FormData) => {
+    const subject = encodeURIComponent(`[Portfolio] ${data.subject}`);
+    const body = encodeURIComponent(
+      `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`
+    );
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+    setIsSubmitted(true);
+    reset();
+    setTimeout(() => setIsSubmitted(false), 5000);
   };
 
   return (
@@ -190,29 +173,16 @@ export default function Contact() {
               )}
             </div>
 
-            {submitError && (
-              <div className="mb-6 flex items-start gap-2 rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-400">
-                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-                <p>{submitError}</p>
-              </div>
-            )}
-
             <Button
               type="submit"
               variant="primary"
               size="lg"
-              disabled={isSubmitting}
               className="w-full"
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Sending...
-                </>
-              ) : isSubmitted ? (
+              {isSubmitted ? (
                 <>
                   <CheckCircle className="mr-2 h-5 w-5" />
-                  Message Sent!
+                  Check your email app!
                 </>
               ) : (
                 <>
