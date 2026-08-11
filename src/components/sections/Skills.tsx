@@ -1,38 +1,91 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import {
+  SiReact,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiTypescript,
+  SiHtml5,
+  SiCss,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiPostgresql,
+  SiDocker,
+  SiGithub,
+  SiJenkins,
+  SiPostman,
+  SiGrafana,
+  SiJavascript,
+  SiPython,
+  SiOpenjdk,
+  SiDotnet,
+} from "react-icons/si";
+import type { IconType } from "react-icons";
+import { Braces } from "lucide-react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import { skills } from "@/lib/data";
 
-function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+const iconMap: Record<string, IconType | typeof Braces> = {
+  SiReact,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiTypescript,
+  SiHtml5,
+  SiCss,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiPostgresql,
+  SiDocker,
+  SiGithub,
+  SiJenkins,
+  SiPostman,
+  SiGrafana,
+  SiJavascript,
+  SiPython,
+  SiOpenjdk,
+  SiDotnet,
+  Braces,
+};
+
+function SkillLogo({
+  name,
+  icon,
+  index,
+}: {
+  name: string;
+  icon: string;
+  index: number;
+}) {
+  const Icon = iconMap[icon];
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -20 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-      transition={{ delay: index * 0.08, duration: 0.5 }}
-      className="group"
+      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.06, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      className="flex items-center justify-center"
     >
-      <div className="mb-2 flex items-center justify-between">
-        <span className="text-sm font-medium text-text-primary">{name}</span>
-        <span className="font-mono text-xs text-text-muted">{level}%</span>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-surface">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${level}%` } : { width: 0 }}
-          transition={{
-            delay: index * 0.08 + 0.2,
-            duration: 0.8,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          }}
-          className="h-full rounded-full bg-gradient-to-r from-accent-from via-accent-via to-accent-to opacity-80 group-hover:opacity-100 transition-opacity"
-        />
-      </div>
+      <motion.div
+        animate={{ y: [0, -6, 0] }}
+        transition={{
+          duration: 4 + (index % 3),
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: (index % 4) * 0.7,
+        }}
+        whileHover={{ scale: 1.08 }}
+        className="group flex flex-col items-center gap-3 rounded-2xl border border-card-border bg-card px-4 py-6 backdrop-blur-xl will-change-transform transition-colors hover:border-accent-via/60 hover:bg-surface"
+      >
+        <Icon className="h-10 w-10 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+        <span className="text-center text-sm font-medium text-text-primary">
+          {name}
+        </span>
+        <span className="absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-via/0 to-transparent transition-all duration-300 group-hover:via-accent-via/60" />
+      </motion.div>
     </motion.div>
   );
 }
@@ -66,12 +119,12 @@ export default function Skills() {
             <h3 className="mb-6 text-lg font-semibold text-text-primary font-heading">
               {category.category}
             </h3>
-            <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
               {category.items.map((skill, i) => (
-                <SkillBar
+                <SkillLogo
                   key={skill.name}
                   name={skill.name}
-                  level={skill.level}
+                  icon={skill.icon}
                   index={i}
                 />
               ))}
