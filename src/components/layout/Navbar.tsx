@@ -71,15 +71,18 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button
-              variant="primary"
-              size="sm"
+            <a
+              href={personalInfo.resumeUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex"
-              onClick={() => window.open("/images/resume.pdf", "_blank")}
             >
-              <Download className="mr-2 h-4 w-4" />
-              Resume
-            </Button>
+              <Button variant="primary" size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                Resume
+              </Button>
+            </a>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-surface md:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-via"
@@ -129,15 +132,17 @@ export default function Navbar() {
                 transition={{ delay: NAV_LINKS.length * 0.05 }}
                 className="mt-2"
               >
-                <Button
-                  variant="primary"
-                  size="sm"
-                  className="w-full"
-onClick={() => window.open(personalInfo.resumeUrl, "_blank")}
+                <a
+                  href={personalInfo.resumeUrl}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <Download className="mr-2 h-4 w-4" />
-                  Download Resume
-                </Button>
+                  <Button variant="primary" size="sm" className="w-full">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Resume
+                  </Button>
+                </a>
               </motion.div>
             </div>
           </motion.div>
