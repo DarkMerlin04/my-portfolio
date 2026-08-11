@@ -7,7 +7,7 @@ export const personalInfo = {
   location: "Bangkok, Thailand",
   availability: "Open to junior full-stack opportunities",
   languages: "Thai (Native), English (TOEIC 570)",
-  resumeUrl: "/images/resume.pdf",
+  resumeUrl: "resume/Raweeroj_Thokaeo_Resume_EN.pdf",
   social: {
     github: "https://github.com/DarkMerlin04",
   },

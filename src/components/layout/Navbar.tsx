@@ -2,6 +2,7 @@
 
 import { useStore } from "@/store/useStore";
 import { NAV_LINKS } from "@/lib/constants";
+import { personalInfo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -132,7 +133,7 @@ export default function Navbar() {
                   variant="primary"
                   size="sm"
                   className="w-full"
-                  onClick={() => window.open("/images/resume.pdf", "_blank")}
+onClick={() => window.open(personalInfo.resumeUrl, "_blank")}
                 >
                   <Download className="mr-2 h-4 w-4" />
                   Download Resume
